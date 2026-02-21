@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — CTF v6</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap');
+:root{--g:#00ff41;--r:#ff4444;--gold:#ffd700}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050505;color:var(--g);font-family:'Share Tech Mono',monospace;min-height:100vh}
+#LS{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;min-height:100vh}
+#LS h2{font-family:'Orbitron',sans-serif;font-size:2em;text-shadow:0 0 20px var(--g)}
+#AP{display:none}
+.wp{max-width:1100px;margin:0 auto;padding:20px}
+.tp{display:flex;align-items:center;justify-content:space-between;padding:13px 0 20px;border-bottom:1px solid rgba(0,255,65,.1);margin-bottom:20px;flex-wrap:wrap;gap:9px}
+.tp h1{font-family:'Orbitron',sans-serif;font-size:1.4em;text-shadow:0 0 14px var(--g)}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:18px}
+.sc{background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:10px;padding:13px;text-align:center}
+.sv{font-family:'Orbitron',sans-serif;font-size:1.7em;color:var(--g)}
+.sl{font-size:10px;opacity:.35;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.card{background:rgba(0,255,65,.03);border:1px solid rgba(0,255,65,.1);border-radius:11px;padding:17px;margin-bottom:17px}
+.card h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.45;margin-bottom:11px}
+input[type=text],input[type=password]{padding:9px 12px;background:rgba(0,0,0,.9);border:1.5px solid rgba(0,255,65,.2);border-radius:7px;color:var(--g);font-family:inherit;font-size:13px;outline:none;transition:.2s}
+input[type=text]:focus,input[type=password]:focus{border-color:var(--g)}
+.btn{padding:9px 15px;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:bold;cursor:pointer;transition:.2s}
+.red{background:var(--r);color:#fff}.red:hover{background:#c00}
+.grn{background:var(--g);color:#000}.grn:hover{background:#0c3}
+.gh{background:transparent;border:1px solid rgba(0,255,65,.2);color:var(--g)}.gh:hover{background:rgba(0,255,65,.07)}
+.sm{padding:4px 9px;font-size:11px;border-radius:5px}
+.tabs{display:flex;gap:6px;margin-bottom:15px;flex-wrap:wrap}
+.tab{padding:7px 13px;border:1px solid rgba(0,255,65,.16);border-radius:7px;cursor:pointer;font-size:12px;transition:.2s;user-select:none}
+.tab.on,.tab:hover{background:var(--g);color:#000;font-weight:bold}
+.pn{display:none}.pn.on{display:block}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{padding:7px 7px;text-align:left;border-bottom:1px solid rgba(0,255,65,.14);font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4}
+td{padding:7px 7px;border-bottom:1px solid rgba(0,255,65,.05);vertical-align:middle}
+tr:hover td{background:rgba(0,255,65,.02)}
+.scr{max-height:350px;overflow-y:auto}
+.ck{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:bold}
+.CLEAN,.LOW{color:var(--g);border:1px solid var(--g)}
+.MEDIUM{color:#fa0;border:1px solid #fa0}
+.HIGH{color:#f60;border:1px solid #f60}
+.CRITICAL{color:var(--r);border:1px solid var(--r)}
+.fd{max-height:210px;overflow-y:auto;background:#000;border:1px solid rgba(0,255,65,.08);border-radius:8px;padding:10px;font-size:11px;line-height:1.7}
+.fs{color:var(--g)}.fb{color:var(--r)}.fa{color:var(--gold)}
+#toast{position:fixed;top:16px;right:16px;padding:10px 16px;border-radius:8px;font-size:13px;display:none;z-index:9999;font-weight:bold}
+</style>
+</head>
+<body>
+
+<div id="LS">
+  <h2>🛡️ ADMIN ACCESS</h2>
+  <input id="LPW" type="password" placeholder="Enter admin password" style="width:260px;padding:13px 15px;font-size:15px">
+  <button class="btn grn" id="LBT" style="width:260px;padding:13px;font-size:14px">🔓 LOGIN</button>
+  <div id="LER" style="color:var(--r);font-size:13px;min-height:18px"></div>
+</div>
+
+<div id="AP">
+<div class="wp">
+  <div class="tp">
+    <h1>🛡️ ADMIN PANEL</h1>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <a href="/" style="text-decoration:none"><button class="btn gh">← CTF</button></a>
+      <button class="btn red sm" id="LOUT">Logout</button>
+    </div>
+  </div>
+
+  <div class="st">
+    <div class="sc"><div class="sv" id="sTot">-</div><div class="sl">Submissions</div></div>
+    <div class="sc"><div class="sv" id="sAvg">-</div><div class="sl">Avg Score</div></div>
+    <div class="sc"><div class="sv" id="sTop">-</div><div class="sl">Top Score</div></div>
+    <div class="sc"><div class="sv" id="sBan">-</div><div class="sl">Banned IPs</div></div>
+  </div>
+
+  <div class="card">
+    <h3>🚫 Ban IP Address</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <input type="text" id="bIP"  placeholder="IP Address"        style="flex:1;min-width:140px">
+      <input type="text" id="bRS"  placeholder="Reason (optional)" style="flex:2;min-width:170px">
+      <button class="btn red" id="bBT">🚫 BAN</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" id="T0">📋 Submissions</div>
+    <div class="tab" id="T1">🚫 Banned IPs</div>
+    <div class="tab" id="T2">📡 Request Log</div>
+    <div class="tab" id="T3">🔴 Live Feed</div>
+  </div>
+
+  <div id="P0" class="pn on">
+    <div class="card"><h3>All Submissions</h3>
+      <div class="scr"><table>
+        <thead><tr><th>ID</th><th>Name</th><th>Score</th><th>Rank</th><th>Crack</th><th>IP</th><th>Geo</th><th>Risk</th><th>Time</th><th>Actions</th></tr></thead>
+        <tbody id="tS"><tr><td colspan="10" style="text-align:center;opacity:.3;padding:16px">Loading...</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</body>
+</html>
